@@ -3,27 +3,28 @@ import {
   MiddlewareConsumer,
   RequestMethod,
   NestModule,
+  Logger,
   Global
 } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { SessionMiddleware } from './middleware/session.middleware';
 import { FeedModule } from './graphql/feed/modules/feed.module';
 import { HttpClientService } from './service/http.service';
-import { MyLoggerService } from './service/logger.service';
 import { SessionService } from './service/session.service';
-import { MyHttpModule } from './provider/http.module';
+import { MyHttpModule as HttpModule } from './provider/http.module';
 import config from './config';
 
 @Global()
 @Module({
   imports: [
     FeedModule,
-    MyHttpModule.registerGlobal(config.axios), // HttpService的封装,
+    // HttpService的封装,全局暴露不用到处注入
+    HttpModule.registerGlobal(config.axios),
     GraphQLModule.forRoot(config.apollo),
   ],
   controllers: [],
-  providers: [HttpClientService, HttpClientService, MyLoggerService, SessionService],
-  exports: [HttpClientService, HttpClientService, MyLoggerService, SessionService],
+  providers: [HttpClientService, SessionService, Logger],
+  exports: [HttpClientService, SessionService, Logger],
 })
 export class AppModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {

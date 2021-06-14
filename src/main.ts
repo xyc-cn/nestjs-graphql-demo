@@ -1,10 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { MyLoggerService } from './service/logger.service';
+import { WinstonModule } from 'nest-winston';
+import config from './config';
+
+const logger = WinstonModule.createLogger({
+  transports: config.logger
+});
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule,{
+    logger
+  })
   await app.listen(3000);
-  MyLoggerService.useFactory().log(`Application is running on: ${await app.getUrl()}`);
+  logger.log('application start listen on port 3000')
 }
-bootstrap();
+
+bootstrap().then().catch((e)=>{
+  logger.error(e)
+});

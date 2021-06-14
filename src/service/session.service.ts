@@ -3,6 +3,18 @@
  */
 import { Scope } from '@nestjs/common';
 import * as querystring from 'querystring';
+import { ParsedUrlQuery } from 'querystring';
+import { IncomingHttpHeaders } from 'http';
+
+export type SessionServiceType = {
+  getQueryData: () => ParsedUrlQuery;
+  setQueryData: (string) => void;
+  getCookie: () => string;
+  setCookie: (string) => void;
+  getHeaders: () => IncomingHttpHeaders;
+  setHeaders: (headers: IncomingHttpHeaders) => void;
+};
+
 /**
  * 全局sessionService，针对每个请求新创建一个，用于传递cookie等信息
  */
@@ -12,42 +24,26 @@ export const SessionService = {
   useFactory: () => {
     let cookieData = '';
     let queryData = '';
-    let headerData: { [name: string]: string } = {};
+    let headerData: IncomingHttpHeaders = {};
     return {
-      getCookie() {
+      getCookie(): string {
         return cookieData;
       },
-      setCookie(str: string) {
+      setCookie(str: string): void {
         cookieData = str;
       },
-      getQueryData(name: string, allData?: boolean) {
-        const query = querystring.parse(queryData);
-        if (allData) {
-          return querystring.parse(queryData);
-        } else {
-          return query[name] || '';
-        }
+      getQueryData(): ParsedUrlQuery {
+        return querystring.parse(queryData);
       },
-      setQueryData(str: string) {
+      setQueryData(str: string): void {
         queryData = str;
       },
-      getHeaders() {
+      getHeaders(): IncomingHttpHeaders {
         return headerData;
       },
-      setHeaders(obj: { [name: string]: string }) {
-        headerData = obj;
+      setHeaders(headers: IncomingHttpHeaders): void {
+        headerData = headers;
       },
     };
   },
-};
-export type SessionServiceType = {
-  getQueryData: (
-    name: string,
-    allData?: boolean,
-  ) => string | { [name: string]: string };
-  setQueryData: (string) => void;
-  getCookie: () => string;
-  setCookie: (string) => void;
-  getHeaders: () => { [name: string]: string };
-  setHeaders: (object) => void;
 };

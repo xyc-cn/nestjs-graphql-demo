@@ -1,7 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Feed } from '../models/feed.model';
 import { HttpClientService } from '../../../service/http.service';
-import { MyLoggerServiceType } from '../../../service/logger.service';
 import { SessionServiceType } from '../../../service/session.service';
 
 @Injectable()
@@ -9,7 +8,7 @@ export class FeedService {
   constructor(
     private httpClientService: HttpClientService,
     @Inject('SessionService') private sessionService: SessionServiceType,
-    @Inject('MyLoggerService') private logger: MyLoggerServiceType,
+    private logger: Logger,
   ) {}
 
   async findOneById(id: string): Promise<Feed> {
