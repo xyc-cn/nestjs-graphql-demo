@@ -12,7 +12,7 @@ export class FeedResolver {
     @Args('id', {
       description: '这是素材的id',
     })
-    id: string,
+    id: number,
   ): Promise<Feed> {
     const feed = await this.feedService.findOneById(id);
 

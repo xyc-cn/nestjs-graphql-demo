@@ -1,5 +1,5 @@
 {
   "extends": "./tsconfig.json",
   "exclude": ["node_modules",
-    "server", "dist", "**/*spec.ts"]
+    "server", "dist", "**/*spec.ts", "vue"]
 }

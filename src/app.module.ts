@@ -9,6 +9,7 @@ import {
 import { GraphQLModule } from '@nestjs/graphql';
 import { SessionMiddleware } from './middleware/session.middleware';
 import { FeedModule } from './graphql/feed/modules/feed.module';
+import { CommentModule } from './graphql/comment/modules/comment.module';
 import { HttpClientService } from './service/http.service';
 import { SessionService } from './service/session.service';
 import { MyHttpModule as HttpModule } from './provider/http.module';
@@ -18,6 +19,7 @@ import config from './config';
 @Module({
   imports: [
     FeedModule,
+    CommentModule,
     // HttpService的封装,全局暴露不用到处注入
     HttpModule.registerGlobal(config.axios),
     GraphQLModule.forRoot(config.apollo),

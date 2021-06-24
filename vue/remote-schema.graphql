@@ -1,0 +1,27 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+  query: Query
+}
+
+type Comment {
+  content: String!
+  id: Int!
+}
+
+type Feed {
+  content: String!
+  id: ID!
+  title: String!
+}
+
+type Query {
+  comment(
+    "这是评论的id"
+    id: String!
+  ): Comment!
+  feed(
+    "这是素材的id"
+    id: String!
+  ): Feed!
+}

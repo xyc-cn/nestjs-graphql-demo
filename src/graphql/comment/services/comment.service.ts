@@ -1,23 +1,23 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { Feed } from '../models/feed.model';
+import { Comment } from '../models/Comment.model';
 import { HttpClientService } from '../../../service/http.service';
 import { SessionServiceType } from '../../../service/session.service';
 
 @Injectable()
-export class FeedService {
+export class CommentService {
   constructor(
     private httpClientService: HttpClientService,
     @Inject('SessionService') private sessionService: SessionServiceType,
     private logger: Logger,
   ) {}
 
-  async findOneById(id: number): Promise<Feed> {
-    const feed = await this.httpClientService.request({
-      url: 'http://127.0.0.1:3003/feed/' + id,
+  async findOneById(id: number): Promise<Comment> {
+    const comment = await this.httpClientService.request({
+      url: 'http://127.0.0.1:3003/comment/' + id,
       methods: 'get',
     })
-    if (feed?.data?.code === 0 && feed?.data?.data) {
-      return feed.data.data as Feed;
+    if (comment?.data?.code === 0 && comment?.data?.data) {
+      return comment.data.data as Comment;
     } else {
       throw new Error('call cgi error')
     }

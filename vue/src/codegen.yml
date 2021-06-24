@@ -1,0 +1,5 @@
+schema: http://127.0.0.1:3000/graphql
+generates:
+  ./src/types/graphql/types.d.ts:
+    plugins:
+      - typescript
